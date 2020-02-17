@@ -1,10 +1,12 @@
 package com.example.service;
 
 import com.example.entity.Item;
+import com.example.feign.ItemFeignClient;
 import com.example.properties.OrderProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.ribbon.proxy.annotation.Hystrix;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -24,7 +26,10 @@ public class ItemService {
 //    private String itemUrl;
 
     @Autowired
-    OrderProperties orderProperties;
+    private OrderProperties orderProperties;
+
+    @Autowired
+    private ItemFeignClient itemFeignClient;
 
     public Item queryItemById(Long id) {
 //        return restTemplate.getForObject("http://localhost:8081/item/" + id, Item.class);
@@ -47,10 +52,11 @@ public class ItemService {
      * @author Jack Ji
      * @date 2020/2/17 14:31
      */
-    @HystrixCommand(fallbackMethod = "queryItemByIdFallbackMethod")
+//    @HystrixCommand(fallbackMethod = "queryItemByIdFallbackMethod")
     public Item queryItemById3(Long id) {
-        String itemUrl = "http://app-item/item/{id}";
-        Item result = restTemplate.getForObject(itemUrl, Item.class, id);
+//        String itemUrl = "http://app-item/item/{id}";
+//        Item result = restTemplate.getForObject(itemUrl, Item.class, id);
+        Item result = itemFeignClient.queryItemById(id);
         System.out.println("===========HystrixCommand queryItemById-线程池名称：" + Thread.currentThread().getName() + "订单系统调用商品服务,result:" + result);
         return result;
     }
