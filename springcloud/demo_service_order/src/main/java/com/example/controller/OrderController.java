@@ -22,4 +22,9 @@ public class OrderController {
         return orderService.queryOrderById(orderId);
     }
 
+    @GetMapping("/order2/{orderId}")
+    public Order queryOrderById2(@PathVariable("orderId") String orderId) {
+        return orderService.queryOrderByIdx(orderId);
+    }
+
 }
