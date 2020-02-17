@@ -26,6 +26,11 @@ public class ItemService {
     public Item queryItemById(Long id) {
 //        return restTemplate.getForObject("http://localhost:8081/item/" + id, Item.class);
 //        return restTemplate.getForObject(itemUrl + id, Item.class);
-        return restTemplate.getForObject(orderProperties.getItem().getUrl() + id, Item.class);
+//        return restTemplate.getForObject(orderProperties.getItem().getUrl() + id, Item.class);
+        // 该方法走eureka注册中心调用(去注册中心根据app-item查找服务，这种方式必须先开启负载均衡@LoadBalanced)
+        String itemUrl = "http://app-item/item/{id}";
+        Item result = restTemplate.getForObject(itemUrl, Item.class, id);
+        System.out.println("order result: " + result);
+        return result;
     }
 }
