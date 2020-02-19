@@ -1,0 +1,37 @@
+server:
+  port: 8087 #服务端口
+spring:
+  application:
+    name: app-zuul-gateway #指定服务名
+###服务注册到Eureka注册中心的地址
+eureka:
+  client:
+    service-url:
+      defaultZone: http://jc:123456@127.0.0.1:8100/eureka,http://jc:123456@127.0.0.1:9100/eureka
+    ### 因为该应用为服务提供者，是eureka的一个客户端，需要注册到注册中心
+    register-with-eureka: true
+    ### 是否需要从eureka上检索服务
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    instance-id: ${spring.application.name}###${server.port}
+#zuul:
+#  routes: #定义服务转发规则
+#    item-service: #item-service名字任意取
+#      # path: /item-service/** #配置请求url的请求规则
+#      # url: http://127.0.0.1:8081 #真正的微服务地址，path匹配的请求都转发到这里
+#      path: /item-service/** #匹配item-service的请求app-item服务
+#      serviceid: app-item
+#    order-service: #名字尽量和业务系统相关
+#      path: /order-service/** #匹配order-service的请求app-order服务
+#      serviceid: app-order
+zuul:
+  #  使用'*'可忽略所有微服务，只代理指定服务
+  ignored-services: '*'
+  ### 忽略指定服务，多个服务逗号分隔
+  #ignored-services: app-item,app-order
+  routes:
+    ### 更为简单的路由配置serviceid = 指定url即可，并且“面向服务配置，不破坏Hystrix、Ribbon特性”
+    app-item: /item-service/**
+    app-order: /order-service/**
