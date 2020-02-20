@@ -1,5 +1,5 @@
 zuul:
   routes:
     ### 更为简单的路由配置serviceid = 指定url即可，并且“面向服务配置，不破坏Hystrix、Ribbon特性”
-    app-item: /item-service/**
+    app-itemXX: /item-service/**
     app-order: /order-service/**
