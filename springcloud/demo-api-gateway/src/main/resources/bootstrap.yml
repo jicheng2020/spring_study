@@ -1,0 +1,20 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://jc:123456@127.0.0.1:8100/eureka,http://jc:123456@127.0.0.1:9100/eureka
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    instance-id: ${spring.application.name}###${server.port}
+
+spring:
+  cloud:
+    config:
+      name: service-zuul
+      profile: dev
+      label: master
+      discovery:
+        enabled: true
+        service-id: config-server

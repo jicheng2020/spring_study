@@ -1,0 +1,23 @@
+###疑问：在application.yml中以及配置Eureka的信息，为什么在bootstrap.yml还需要配置？
+###因为在Spring Boot中bootstrap.yml在application.yml之前加载，所以即使在application.yml中以及配置Eureka的信息，是使用不了的，所以需要在bootstrap.yml中配置Eureka的信息。
+eureka:
+  client:
+    service-url:
+      defaultZone: http://jc:123456@127.0.0.1:8100/eureka,http://jc:123456@127.0.0.1:9100/eureka
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    instance-id: ${spring.application.name}###${server.port}
+
+spring:
+  cloud:
+    config:
+      name: application  #对该名称要和git中的配置一致
+      #uri: http://127.0.0.1:7788/ #配置中心的地址
+      profile: dev #对应配置中心的${profile}
+      label: master
+      discovery:
+        enabled: true
+        service-id: config-server #指定配置中心工程的名称

@@ -26,12 +26,20 @@ eureka:
 #    order-service: #名字尽量和业务系统相关
 #      path: /order-service/** #匹配order-service的请求app-order服务
 #      serviceid: app-order
-zuul:
-  #  使用'*'可忽略所有微服务，只代理指定服务
-  ignored-services: '*'
-  ### 忽略指定服务，多个服务逗号分隔
-  #ignored-services: app-item,app-order
-  routes:
-    ### 更为简单的路由配置serviceid = 指定url即可，并且“面向服务配置，不破坏Hystrix、Ribbon特性”
-    app-item: /item-service/**
-    app-order: /order-service/**
+
+# 从配置中心加载配置
+#zuul:
+#  #  使用'*'可忽略所有微服务，只代理指定服务
+#  ignored-services: '*'
+#  ### 忽略指定服务，多个服务逗号分隔
+#  #ignored-services: app-item,app-order
+#  routes:
+#    ### 更为简单的路由配置serviceid = 指定url即可，并且“面向服务配置，不破坏Hystrix、Ribbon特性”
+#    app-item: /item-service/**
+#    app-order: /order-service/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
