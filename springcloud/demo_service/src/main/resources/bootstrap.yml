@@ -21,3 +21,9 @@ spring:
       discovery:
         enabled: true
         service-id: config-server #指定配置中心工程的名称
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+
